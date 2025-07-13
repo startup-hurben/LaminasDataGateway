@@ -1,0 +1,11 @@
+{
+    "name": "startup-hurben/laminas-data-gateway",
+    "description": "Uma abstração para projetos que usam laminas-db",
+    "version": "0.1.0",
+    "type": "package",
+    "autoload": {
+        "psr-4": {
+            "LaminasDataGateway\\": "src/"
+        }
+    }
+}
