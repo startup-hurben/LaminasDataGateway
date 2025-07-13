@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace LamiasDataGateway;
+namespace LaminasDataGateway;
 
 use \DateTime;
 
