@@ -76,9 +76,6 @@ class DataGateway
             unset($extracted['id']);
         }
 
-        $columns = array_keys($extracted);
-        $values = array_values($extracted);
-
         if (count($columns) !== count($values)) {
             throw new Exception('Column count and value count don\'t match.');
         }
@@ -89,6 +86,9 @@ class DataGateway
 
             $model->setCreated();
             $extracted['created'] = $model->getCreated();
+
+            $columns = array_keys($extracted);
+            $values = array_values($extracted);
 
             $query = $sql->insert();
             $query->into($this->model2Entity($model::class));
@@ -101,6 +101,9 @@ class DataGateway
             } else {
                 $extracted['deleted'] = $model->getDeleted();
             }
+
+            $columns = array_keys($extracted);
+            $values = array_values($extracted);
 
             $query = $sql->update($this->model2Entity($model::class));
             $query->set($extracted);
