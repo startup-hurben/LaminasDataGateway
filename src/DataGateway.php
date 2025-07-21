@@ -76,10 +76,6 @@ class DataGateway
             unset($extracted['id']);
         }
 
-        if (count($columns) !== count($values)) {
-            throw new Exception('Column count and value count don\'t match.');
-        }
-
         $sql = new Sql($this->adapter);
 
         if ($model->getId() === null) {
@@ -89,6 +85,10 @@ class DataGateway
 
             $columns = array_keys($extracted);
             $values = array_values($extracted);
+
+            if (count($columns) !== count($values)) {
+                throw new Exception('Column count and value count don\'t match.');
+            }
 
             $query = $sql->insert();
             $query->into($this->model2Entity($model::class));
@@ -104,6 +104,10 @@ class DataGateway
 
             $columns = array_keys($extracted);
             $values = array_values($extracted);
+
+            if (count($columns) !== count($values)) {
+                throw new Exception('Column count and value count don\'t match.');
+            }
 
             $query = $sql->update($this->model2Entity($model::class));
             $query->set($extracted);
