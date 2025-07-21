@@ -66,7 +66,7 @@ class DataGateway
         return $resultSet;
     }
 
-    public function persist(ModelAbstraction $model,?Predicate ...$predicates): int|string|null
+    public function persist(ModelAbstraction $model,?Predicate ...$predicates): int|null
     {
         $extracted = $model->extract();
         unset($extracted['extraData']);
@@ -126,13 +126,13 @@ class DataGateway
         }
 
         if ($model->getUpdated() === null) {
-            return $this->adapter->getDriver()->getConnection()->getLastGeneratedValue();
+            return (int)$this->adapter->getDriver()->getConnection()->getLastGeneratedValue();
         }
 
         return null;
     }
 
-    public function delete(ModelAbstraction $model, bool $soft = true, Predicate ...$predicates): int|string|null
+    public function delete(ModelAbstraction $model, bool $soft = true, Predicate ...$predicates): null
     {
         if ($soft) {
             $model->setDeleted();
