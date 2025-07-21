@@ -66,7 +66,7 @@ class DataGateway
         return $resultSet;
     }
 
-    public function persist(ModelAbstraction $model,?Predicate ...$predicates): int|null
+    public function persist(ModelAbstraction $model,?Predicate ...$predicates): int|string|null
     {
         $extracted = $model->extract();
         unset($extracted['extraData']);
@@ -132,7 +132,7 @@ class DataGateway
         return null;
     }
 
-    public function delete(ModelAbstraction $model, bool $soft = true, Predicate ...$predicates): int|null
+    public function delete(ModelAbstraction $model, bool $soft = true, Predicate ...$predicates): int|string|null
     {
         if ($soft) {
             $model->setDeleted();
