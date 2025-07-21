@@ -66,7 +66,7 @@ class DataGateway
         return $resultSet;
     }
 
-    public function persist(ModelAbstraction $model,?Predicate ...$predicates): void
+    public function persist(ModelAbstraction $model,?Predicate ...$predicates): int|null
     {
         $extracted = $model->extract();
         unset($extracted['extraData']);
@@ -86,11 +86,18 @@ class DataGateway
         $sql = new Sql($this->adapter);
 
         if ($model->getId() === null) {
+
+            $model->setCreated();
+
             $query = $sql->insert();
             $query->into($this->model2Entity($model::class));
             $query->columns($columns);
             $query->values($values);
         } else {
+            if ($model->getDeleted() === null) {
+                $model->setUpdated();
+            }
+
             $query = $sql->update($this->model2Entity($model::class));
             $query->set($extracted);
 
@@ -106,12 +113,19 @@ class DataGateway
         } catch (Exception $e) {
             throw $e;
         }
+
+        if ($model->getUpdated() === null) {
+            return $this->adapter->getDriver()->getConnection()->getLastGeneratedValue();
+        }
+
+        return null;
     }
 
-    public function delete(ModelAbstraction $model, bool $soft = true, Predicate ...$predicates): void
+    public function delete(ModelAbstraction $model, bool $soft = true, Predicate ...$predicates): int|null
     {
         if ($soft) {
-            $this->persist($model, $predicates);
+            $model->setDeleted();
+            return $this->persist($model, $predicates);
         }
 
         $sql = new Sql($this->adapter);
