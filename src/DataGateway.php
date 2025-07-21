@@ -88,6 +88,7 @@ class DataGateway
         if ($model->getId() === null) {
 
             $model->setCreated();
+            $extracted['created'] = $model->getCreated();
 
             $query = $sql->insert();
             $query->into($this->model2Entity($model::class));
@@ -96,6 +97,9 @@ class DataGateway
         } else {
             if ($model->getDeleted() === null) {
                 $model->setUpdated();
+                $extracted['updated'] = $model->getUpdated();
+            } else {
+                $extracted['deleted'] = $model->getDeleted();
             }
 
             $query = $sql->update($this->model2Entity($model::class));
