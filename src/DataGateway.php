@@ -72,8 +72,12 @@ class DataGateway
         unset($extracted['extraData']);
         unset($extracted['id']);
 
-        if (isset($extracted['id']) and $extracted['id'] === null) {
-            unset($extracted['id']);
+        if (isset($extracted['uuid'])) {
+            unset($extracted['uuid']);
+        }
+
+        if (isset($extracted['email'])) {
+            unset($extracted['email']);
         }
 
         $sql = new Sql($this->adapter);
